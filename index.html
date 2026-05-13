@@ -4,22 +4,28 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body { background: #1a1a1a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 90vh; }
-        button { padding: 20px 40px; font-size: 24px; cursor: pointer; background: #ffd700; border: none; border-radius: 10px; }
+        .roulette { font-size: 80px; margin: 20px; border: 5px solid #ffd700; padding: 20px; border-radius: 20px; }
+        .spinning { animation: spin 0.5s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        button { padding: 15px 30px; font-size: 20px; background: #ffd700; border: none; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <button id="spin">КРУТИТЬ!</button>
+    <div class="roulette" id="slots">🎰</div>
+    <button id="spinBtn">КРУТИТЬ!</button>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Разворачиваем окно на весь экран
+        tg.ready();
+        const slots = document.getElementById('slots');
 
-        document.getElementById('spin').onclick = function() {
-            // Проверка, что JS вообще сработал
-            console.log("Кнопка нажата!");
-            
-            // Отправка данных боту
-            tg.sendData(JSON.stringify({ "action": "spin" }));
+        document.getElementById('spinBtn').onclick = () => {
+            slots.classList.add('spinning');
+            // Эмулируем анимацию 2 секунды
+            setTimeout(() => {
+                slots.classList.remove('spinning');
+                tg.sendData(JSON.stringify({ "action": "spin" }));
+            }, 2000);
         };
     </script>
 </body>

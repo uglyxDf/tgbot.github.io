@@ -4,18 +4,18 @@ from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import Command
 from aiogram.types import WebAppInfo, InlineKeyboardButton, InlineKeyboardMarkup
 
-# Твой токен от BotFather
+# Внимание: В реальных проектах токен нужно хранить в .env файле!
 TOKEN = "8851204263:AAHyamueL0OZmhAVORN1uFa0ro-vQMLMDhs"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# Эмулируем базу данных баланса (в словаре)
+# Эмулируем базу данных баланса
 user_balances = {}
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    # Ссылка на твой сайт на GitHub Pages
+    # Ссылка на твой сайт
     web_app = WebAppInfo(url="https://uglyxdf.github.io/tgbot.github.io/")
     
     markup = InlineKeyboardMarkup(inline_keyboard=[
@@ -28,7 +28,7 @@ async def cmd_start(message: types.Message):
 async def handle_web_app_data(message: types.Message):
     user_id = message.from_user.id
     
-    # Инициализация баланса при первом запуске
+    # Инициализация баланса
     if user_id not in user_balances:
         user_balances[user_id] = 100
     
@@ -39,16 +39,17 @@ async def handle_web_app_data(message: types.Message):
         symbols = ['🍒', '🍋', '💎', '🔔', '⭐️']
         result = [random.choice(symbols) for _ in range(3)]
         
-        # Проверка на победу: все три символа одинаковые
+        # Проверка на победу
         if result[0] == result[1] == result[2]:
             user_balances[user_id] += 50
             win_msg = "🎉 ДЖЕКПОТ! Вы выиграли 50 монет!"
         else:
             win_msg = "😔 Попробуйте еще раз!"
             
-        await message.answer(f"Результат: {' '.join(result)}\n{win_msg}\nВаш баланс: {user_balances[user_id]}")
+        result_str = " | ".join(result)
+        await message.answer(f"🎰 РЕЗУЛЬТАТ: \n\n{result_str}\n\n{win_msg}\n💰 Баланс: {user_balances[user_id]}")
     else:
-        await message.answer("Недостаточно средств на балансе!")
+        await message.answer("❌ Недостаточно средств на балансе!")
 
 async def main():
     print("Бот запущен...")
