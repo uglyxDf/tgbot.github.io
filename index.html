@@ -38,5 +38,31 @@
             }, 100);
         };
     </script>
+
+    <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    
+    // Создаем аудио-объекты
+    const spinSound = new Audio('/spin.mp3');
+    const winSound = new Audio('/win.mp3');
+
+    document.getElementById('spinBtn').onclick = () => {
+        spinSound.play(); // Включаем звук вращения
+        
+        let counter = 0;
+        const interval = setInterval(() => {
+            // ... (твоя логика смены символов) ...
+            
+            counter++;
+            if (counter > 20) {
+                clearInterval(interval);
+                spinSound.pause(); // Останавливаем звук
+                spinSound.currentTime = 0; // Сбрасываем на начало
+                tg.sendData(JSON.stringify({ "action": "spin" }));
+            }
+        }, 100);
+    };
+</script>
 </body>
 </html>
