@@ -3,23 +3,23 @@
 <head>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #1a1a1a; color: white; }
-        .slots { font-size: 50px; margin: 20px; }
-        button { padding: 15px 30px; font-size: 20px; border-radius: 15px; border: none; background: #ffd700; cursor: pointer; }
+        body { background: #1a1a1a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 90vh; }
+        button { padding: 20px 40px; font-size: 24px; cursor: pointer; background: #ffd700; border: none; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <h1>ТГ Казино</h1>
-    <div class="slots" id="slots">❓ ❓ ❓</div>
-    <button id="spinBtn">Крутить (10 credits)</button>
+    <button id="spin">КРУТИТЬ!</button>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready();
+        tg.expand(); // Разворачиваем окно на весь экран
 
-        document.getElementById('spinBtn').onclick = () => {
-            // Отправляем запрос на сервер (в нашем случае — в бота)
-            tg.sendData(JSON.stringify({ action: "spin" }));
+        document.getElementById('spin').onclick = function() {
+            // Проверка, что JS вообще сработал
+            console.log("Кнопка нажата!");
+            
+            // Отправка данных боту
+            tg.sendData(JSON.stringify({ "action": "spin" }));
         };
     </script>
 </body>
