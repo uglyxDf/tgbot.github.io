@@ -1,68 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body { background: #1a1a1a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; }
-        .slots { display: flex; gap: 10px; font-size: 60px; margin: 30px; }
-        .slot { border: 3px solid #ffd700; padding: 20px; border-radius: 15px; width: 60px; height: 80px; display: flex; align-items: center; justify-content: center; }
-        button { padding: 20px 40px; font-size: 24px; background: #ffd700; border: none; border-radius: 15px; cursor: pointer; }
-    </style>
 </head>
 <body>
-    <h1>🎰 Telegram Casino</h1>
-    <div class="slots">
-        <div class="slot" id="s1">❓</div>
-        <div class="slot" id="s2">❓</div>
-        <div class="slot" id="s3">❓</div>
+    <div id="app">
+        <header>
+            <div id="balance">Баланс: 100 💰</div>
+        </header>
+        <main>
+            <div class="slots-container">
+                <div class="slot" id="s1">🍒</div>
+                <div class="slot" id="s2">🍒</div>
+                <div class="slot" id="s3">🍒</div>
+            </div>
+            <button id="spinBtn" class="spin-btn">КРУТИТЬ (10💰)</button>
+        </main>
     </div>
-    <button id="spinBtn">КРУТИТЬ!</button>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        const symbols = ['🍒', '🍋', '💎', '🔔', '⭐️'];
-
-        document.getElementById('spinBtn').onclick = () => {
-            let counter = 0;
-            // Анимация прокрутки (быстрая смена символов)
-            const interval = setInterval(() => {
-                document.getElementById('s1').innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                document.getElementById('s2').innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                document.getElementById('s3').innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                counter++;
-                if (counter > 20) { // Крутим 2 секунды
-                    clearInterval(interval);
-                    tg.sendData(JSON.stringify({ "action": "spin" }));
-                }
-            }, 100);
-        };
-    </script>
-
-    <script>
-    const tg1 = window.Telegram.WebApp;
-    tg.ready();
-    
-    // Создаем аудио-объекты
-    const spinSound = new Audio('/spin.mp3');
-    const winSound = new Audio('/win.mp3');
-
-    document.getElementById('spinBtn').onclick = () => {
-        spinSound.play(); // Включаем звук вращения
-        
-        let counter = 0;
-        const interval = setInterval(() => {
-            // ... (твоя логика смены символов) ...
-            
-            counter++;
-            if (counter > 20) {
-                clearInterval(interval);
-                spinSound.pause(); // Останавливаем звук
-                spinSound.currentTime = 0; // Сбрасываем на начало
-                tg.sendData(JSON.stringify({ "action": "spin" }));
-            }
-        }, 100);
-    };
-</script>
+    <script src="app.js"></script>
 </body>
 </html>
